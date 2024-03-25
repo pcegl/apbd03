@@ -21,3 +21,7 @@ var numbers3 = new List<int>() {4, 5, 6};
 
 // HashMap
 Dictionary<PossibleProducts, double> products = new();
+
+Ship ship = new Ship(1000, 80, 5);
+ship.PrintShipInfo();
+Container c1 = new LiquidContainer(40,3,40,4,200,false);
