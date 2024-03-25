@@ -19,24 +19,45 @@ public class Ship
 
     public void LoadContainer(Container container, double weight)
     {
-        container.Load(weight);
+        if (!Containers.Contains(container))
+            Console.WriteLine("Container is not on the ship.");
+        else
+        {
+          container.Load(weight);  
+        }
     }
 
     public void LoadShip(Container container)
     {
-        double totalWeight = Containers.Sum(c => c.CargoWeight) + Containers.Sum(c => c.ContainerWeight) + container.CargoWeight + container.ContainerWeight;
+        if (Containers.Contains(container))
+        {
+            Console.WriteLine("Container is already on the ship");
+        }
+        else
+        {
+            double totalWeight = Containers.Sum(c => c.CargoWeight) + Containers.Sum(c => c.ContainerWeight) +
+                                 container.CargoWeight + container.ContainerWeight;
 
-        if (Containers.Count + 1 > MaxContainers)
-            throw new InvalidOperationException("Cannot load container, ship has reached maximum capacity.");
+            if (Containers.Count + 1 > MaxContainers)
+                throw new InvalidOperationException("Cannot load container, ship has reached maximum capacity.");
 
-        if (totalWeight > MaxWeight)
-            throw new OverfillException("Cannot load container, ship has reached maximum weight capacity.");
+            if (totalWeight > MaxWeight)
+                throw new OverfillException("Cannot load container, ship has reached maximum weight capacity.");
 
-        Containers.Add(container);
+            Containers.Add(container);
+        }
     }
 
     public void LoadShip(List<Container> containers)
     {
+        foreach (var c in containers)
+        {
+            if (Containers.Contains(c))
+            {
+                Console.WriteLine("Cannot load the ship");
+                return;
+            }
+        }
         double totalWeight = Containers.Sum(c => c.CargoWeight) + Containers.Sum(c=> c.ContainerWeight) + containers.Sum(c => c.CargoWeight) + containers.Sum(c => c.ContainerWeight);
 
         if (Containers.Count + containers.Count > MaxContainers)
@@ -50,12 +71,22 @@ public class Ship
 
     public void RemoveContainer(Container container)
     {
-        Containers.Remove(container);
+        if (!Containers.Contains(container))
+            Console.WriteLine("Container is not on the ship.");
+        else
+        {
+           Containers.Remove(container); 
+        }
     }
 
     public void UnloadContainer(Container container)
     {
-        container.Unload();
+        if (!Containers.Contains(container))
+            Console.WriteLine("Container is not on the ship.");
+        else
+        {
+            container.Unload();  
+        }
     }
 
     public void ReplaceContainer(Container c1, Container c2)
@@ -73,7 +104,7 @@ public class Ship
             throw new ArgumentException("Container not found on the ship.");
 
         targetShip.LoadContainer(container, container.CargoWeight);
-        Containers.Remove(container);   
+        Containers.Remove(container);
     }
 
     public void PrintContainerInfo(Container container)

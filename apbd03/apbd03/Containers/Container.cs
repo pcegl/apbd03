@@ -37,17 +37,11 @@ public abstract class Container : IContainer
   
     public virtual void Load(double cargoWeight)
     {
-        if (CargoWeight > 0)
-        {
-            Console.WriteLine("Container is already loaded. Cannot load cargo again.");
-            return;
-        }
-
         if (cargoWeight > MaxCapacity)
         {
             throw new OverfillException("Cargo weight exceeds maximum capacity.");
         }
 
-        CargoWeight = cargoWeight;
+        CargoWeight += cargoWeight;
     }
 }
